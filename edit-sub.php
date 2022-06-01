@@ -48,8 +48,8 @@ if(isset($_POST['submit'])):
 	
 	// Jika lolos validasi lakukan hal di bawah ini
 	if(empty($errors)):
-		$query = $pdo->prepare('SELECT * FROM skala_penilaian where nama = :nama and id_kriteria=:id_kriteria');			
-		$query->execute(array('nama' => $nama, 'id_kriteria' => $id_kriteria));
+		$query = $pdo->prepare('SELECT * FROM skala_penilaian where nama = :nama and id_kriteria=:id_kriteria and nilai=:nilai');			
+		$query->execute(array('nama' => $nama, 'id_kriteria' => $id_kriteria, 'nilai' => $nilai));
 		// menampilkan berupa nama field
 		$query->setFetchMode(PDO::FETCH_ASSOC);
 		

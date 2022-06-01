@@ -76,7 +76,7 @@ require_once('template-parts/header.php');
 				$kriterias = $query2->fetchAll();
 				if(!empty($kriterias)):
 				?>
-					<h3>Nilai Kriteria</h3>
+					<h3>Nilai Kriteria Bernilai</h3>
 					<table class="pure-table">
 						<thead>
 							<tr>
@@ -101,6 +101,31 @@ require_once('template-parts/header.php');
 				<?php
 				endif;
 				?>
+				<?php
+					$query = $pdo->prepare('SELECT id_kriteria, nama FROM kriteria where id_kriteria not in (Select id_kriteria from nilai_alternatif where id_alternatif= :id_alternatif)');			
+					$query->execute(array('id_alternatif' => $id_alternatif));
+					// menampilkan berupa nama field
+					$query->setFetchMode(PDO::FETCH_ASSOC);
+					
+					if($query->rowCount() > 0): ?>
+
+						<h3>Nilai Kriteria Belum Bernilai</h3>
+						<table class="pure-table">
+							<thead>
+								<tr>
+									<?php	
+										while($kriteria = $query->fetch()):							
+									?>
+									<td><?php echo $kriteria['nama']; ?></td>
+									<?php endwhile; ?>
+								</tr>
+							</thead>
+						</table>
+						
+						<?php
+					endif;
+					?>
+	
 
 				<p><a href="list-alternatif.php" class="button" style="background-color:yellow; color:black;"><span class="fa fa-backward"></span> Back</a> &nbsp; <a href="edit-alternatif.php?id=<?php echo $id_alternatif; ?>" class="button"><span class="fa fa-pencil"></span> Edit</a> &nbsp; <a href="hapus-alternatif.php?id=<?php echo $id_alternatif; ?>" class="button button-red yaqin-hapus"><span class="fa fa-times"></span> Hapus</a></p>
 			

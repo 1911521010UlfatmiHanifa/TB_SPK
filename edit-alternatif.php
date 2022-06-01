@@ -76,6 +76,14 @@ if(isset($_POST['submit'])):
 						'id_skala' =>$id_skala
 					) );
 				endforeach;
+				foreach($kriteria as $id_kriteria => $id_skala):
+					$handle = $pdo->prepare('INSERT INTO nilai_alternatif (id_alternatif, id_kriteria, id_skala) VALUES (:id_alternatif, :id_kriteria, :id_skala)');
+					$handle->execute( array(
+						'id_alternatif' => $id_alternatif,
+						'id_kriteria' => $id_kriteria,
+						'id_skala' =>$id_skala
+					) );
+				endforeach;
 			endif;
 			
 			redirect_to('list-alternatif.php?status=sukses-edit');
@@ -180,6 +188,39 @@ require_once('template-parts/header.php');
 						
 					else:					
 						echo '<p>Kriteria masih kosong.</p>';						
+					endif;
+					?>
+
+					<?php
+					$query = $pdo->prepare('SELECT id_kriteria, nama FROM kriteria where id_kriteria not in (Select id_kriteria from nilai_alternatif where id_alternatif= :id_alternatif)');			
+					$query->execute(array('id_alternatif' => $id_alternatif));
+					// menampilkan berupa nama field
+					$query->setFetchMode(PDO::FETCH_ASSOC);
+					
+					if($query->rowCount() > 0):
+					
+						while($kriteria = $query->fetch()):							
+						?>
+						
+							<div class="field-wrap clearfix">					
+								<label><?php echo $kriteria['nama']; ?></label>
+								<select name="kriteria[<?php echo $kriteria['id_kriteria']; ?>]">
+									<option selected disabled value="">Pilih Kriteria</option>
+										<?php 
+											$query33 = $pdo->prepare('SELECT * FROM skala_penilaian where id_kriteria='.$kriteria['id_kriteria']);			
+											$query33->execute();
+											// menampilkan berupa nama field
+											$query33->setFetchMode(PDO::FETCH_ASSOC);
+											while($row = $query33->fetch()){
+										?>
+										<option value="<?php echo $row['id_skala']; ?>"><?php echo $row['nama']; ?></option>
+									<?php } ?>					
+								</select>
+								<!-- <input type="number" step="0.001" name="kriteria[<?php echo $kriteria['id_kriteria']; ?>]">								 -->
+							</div>	
+						
+						<?php
+						endwhile;					
 					endif;
 					?>
 					
