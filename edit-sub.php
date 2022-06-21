@@ -56,7 +56,7 @@ if(isset($_POST['submit'])):
 		if($query->rowCount() == 0):
 			$prepare_query = 'UPDATE skala_penilaian SET nama = :nama, nilai = :nilai WHERE id_skala = :id_skala';
 			$data = array(
-				'nama' => $nama,
+				'nama' => strtoupper($nama),
 				'nilai' => $nilai,
 				'id_skala' => $id_skala		
 			);		
