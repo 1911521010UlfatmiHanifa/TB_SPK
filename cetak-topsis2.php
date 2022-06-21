@@ -607,8 +607,7 @@ endforeach;
 			</tbody>
 		</table>
 		<h3>
-			Jadi, dapat disimpulkan bahwa urutan nilai alternatif terbaik untuk penggunaan transportasi di kawasan Universitas
-			Andalas adalah 
+			Jadi, dapat disimpulkan bahwa urutan nilai alternatif terbaik untuk penerima bantuan perbaikan rumah akibat gempa di Pasaman Barat adalah 
 			<?php 
 				foreach($sorted_ranks as $alternatif ):
 					echo $alternatif['nama_alternatif'], " .. ";
